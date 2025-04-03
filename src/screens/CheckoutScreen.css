@@ -1,0 +1,112 @@
+.checkout-success {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.success-card {
+    background-color: #e8f5e9;
+    padding: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    /* max-width: 3000px; */
+    width: 90%;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkmark {
+    width: 40px;
+    height: 40px;
+    color: white;
+}
+
+h1 {
+    color: #2e7d32;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+p {
+    color: #4a4a4a;
+    margin-bottom: 24px;
+    font-size: 16px;
+}
+
+.continue-shopping-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.continue-shopping-btn:hover {
+    background-color: #388e3c;
+}
+
+.continue-shopping-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+/* Animation for the checkmark */
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.checkmark path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: checkmark 1s ease-in-out forwards;
+}
+
+
+.order-details {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.order-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Add animation for card appearance */
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.success-card {
+    animation: slideIn 0.9s ease-out forwards;
+}
