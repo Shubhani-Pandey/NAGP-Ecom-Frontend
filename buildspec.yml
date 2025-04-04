@@ -6,16 +6,13 @@ phases:
       nodejs: 22
    
     commands:
-        # install npm
         - npm install --force
        
   build:
     commands:
-        # run build script
         - npm run build
      
 artifacts:
-  # include all files required to run the application
   files:
     - '**/*'
   base-directory: build
