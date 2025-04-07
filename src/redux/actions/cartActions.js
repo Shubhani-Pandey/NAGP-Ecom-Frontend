@@ -4,7 +4,8 @@ import {Api} from '../../utils/Api'
 import {convertToCartData} from '../../utils/utils.function'
 
 export const addToCart = (id, qty, screen=null) => async (dispatch, getState) => {
-  const {data} = await Api.getRequest(`http://127.0.0.1:5002/products/${id}`)
+  //http://127.0.0.1:5002/products/${id}
+  const {data} = await Api.getRequest(`/products/${id}`)
   const product = JSON.parse(data)
   
   if (screen==null) {
@@ -30,8 +31,8 @@ export const addToCart = (id, qty, screen=null) => async (dispatch, getState) =>
       qty,
     },
   })
-
-  Api.postRequest('http://127.0.0.1:5003/cart', {product_id: id, quantity: qty})
+  //http://127.0.0.1:5003/cart
+  Api.postRequest('/cart', {product_id: id, quantity: qty})
 }
 
 export const removeFromCart =
@@ -41,12 +42,14 @@ export const removeFromCart =
       type: REMOVE_FROM_CART,
       payload: _id,
     })
-    Api.DeleteRequest('http://127.0.0.1:5003/cart/' + _id)
+    //http://127.0.0.1:5003/cart/
+    Api.DeleteRequest('/cart/' + _id)
   }
 
 export const fetchCart = () => async dispatch => {
   try {
-    const {data: strigifyData} = await Api.getRequest(`http://127.0.0.1:5003/user_cart`)
+    //http://127.0.0.1:5003/user_cart
+    const {data: strigifyData} = await Api.getRequest(`/user_cart`)
     const {items} = JSON.parse(strigifyData)
 
     console.log('carts:', items)

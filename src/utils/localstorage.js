@@ -2,6 +2,7 @@ export const access_token = 'E_COMMERCE_TOKEN'
 export const user_details = 'E_COMMERCE_ADMIN'
 
 export const setToken = token => {
+  console.log('setting access token',token)
   window.localStorage.setItem(access_token, token)
 }
 

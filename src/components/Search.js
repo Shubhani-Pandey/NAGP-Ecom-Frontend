@@ -11,6 +11,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Product from '../components/Product'
 import Pagination from './Pagination';
 import {getProducts as listProducts} from '../redux/actions/productActions'
+import { setUserDetails } from "../redux/actions/userAction";
+import { setLoggedUserDetails, getUserDetails, setToken } from '../utils/localstorage'
 
 
 const Search = () => {
@@ -19,6 +21,42 @@ const Search = () => {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        // Parse the URL hash for tokens
+        console.log('SignIn component mounted');
+        console.log('Current URL:', window.location.href);
+    
+        const hash = window.location.hash;
+        console.log('hash', hash);
+        if (hash) {
+          // Extract tokens from URL hash
+          const tokens = hash.substring(1).split('&').reduce((result, item) => {
+            const parts = item.split('=');
+            result[parts[0]] = parts[1];
+            return result;
+          }, {});
+          
+          console.log('tokens',tokens)
+    
+          if (tokens.access_token) {
+            // Store the token
+            setToken(tokens.access_token);
+            
+            // Clear the URL hash
+            window.location.hash = '';
+            
+            // Handle successful login
+            // You might want to redirect or update application state here
+            dispatch(setUserDetails());
+            // replace('/');
+          }
+      
+          if (tokens.id_token) {
+            localStorage.setItem('idToken', tokens.id_token);
+          }
+        }
+      }, []);
 
     const PRICE_RANGES = [
         { id: '1', label: '₹0 - ₹100', min: 0, max: 100 },

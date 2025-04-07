@@ -3,10 +3,8 @@ import * as actionTypes from '../constants/userContants'
 import { setLoggedUserDetails, getUserDetails } from '../../utils/localstorage'
 
 export const setUserDetails = () => async dispatch => {
-  const {statusCode, data} = await Api.getRequest(`http://127.0.0.1:5001/users/me`)
-  
-  console.log(`http://127.0.0.1:5001/users/me`)
-  console.log('user data', statusCode, data)
+  //http://127.0.0.1:5001/users/me
+  const {statusCode, data} = await Api.getRequest(`/users/me`)
 
   if (statusCode === 400 || statusCode === 500) {
     dispatch({
@@ -20,7 +18,6 @@ export const setUserDetails = () => async dispatch => {
   setLoggedUserDetails(data)
 
   const details = getUserDetails()
-  console.log(details)
 
   dispatch({
     type: actionTypes.SET_USER,

@@ -28,7 +28,8 @@ export const getProducts = () => async dispatch => {
     }
 
     // If no cache or cache expired, make the API call
-    const {data} = await Api.getRequest('http://127.0.0.1:5002/products')
+    //http://127.0.0.1:5002/products
+    const {data} = await Api.getRequest('/products')
     const parsedData = JSON.parse(data)
 
     // Update the cache
@@ -56,8 +57,9 @@ export const getProducts = () => async dispatch => {
 export const getProductDetails = id => async dispatch => {
   try {
     dispatch({type: actionTypes.GET_PRODUCT_DETAILS_REQUEST})
-
-    const {data} = await Api.getRequest(`http://127.0.0.1:5002/products/${id}`)
+    
+    //http://127.0.0.1:5002/products/${id}
+    const {data} = await Api.getRequest(`/products/${id}`)
     const p = JSON.parse(data)
 
     dispatch({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Formik, Form } from 'formik';
@@ -22,11 +22,11 @@ import { setToken } from '../../utils/localstorage';
 import { setUserDetails } from "../../redux/actions/userAction";
 import { useStyles } from './signIn.styles';
 import './signIn.css';
-import { jwtDecode } from 'jwt-decode-es';
 
 import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton,GoogleLoginButton } from 'react-social-login-buttons';
 import { GoogleLogin } from '@react-oauth/google';
+import { useAuth  } from "react-oidc-context";
 
 
 
@@ -52,6 +52,79 @@ function SignIn() {
   const { replace, push } = useHistory();
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const auth = useAuth();
+
+  const IDENTITY_PROVIDERS = {
+    GOOGLE: 'Google',
+    FACEBOOK: 'Facebook'
+  };
+
+  useEffect(() => {
+    // Parse the URL hash for tokens
+    console.log('SignIn component mounted');
+    console.log('Current URL:', window.location.href);
+
+    const hash = window.location.hash;
+    const isRedirect = hash && hash.includes('access_token');
+
+    if (!isRedirect && !sessionStorage.getItem('loginAttempted')) {
+      localStorage.clear();
+      sessionStorage.clear();
+     }
+
+    if (isRedirect) {
+      sessionStorage.removeItem('loginAttempted');
+    }
+
+    if (hash) {
+      // Extract tokens from URL hash
+      const tokens = hash.substring(1).split('&').reduce((result, item) => {
+        const parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+      }, {});
+      
+      console.log('tokens',tokens)
+
+      if (tokens.access_token) {
+        localStorage.setItem('accessToken', tokens.access_token);
+        
+        // Clear the URL hash
+        window.location.hash = '';
+        
+        dispatch(setUserDetails());
+        replace('/');
+      }
+    }
+  }, []);
+
+  const signOut= () => {
+    const clientId = "45v61q97j0kbt5j8v84muqfv6e";
+    const logoutUri = "https://localhost:3000/signin";
+    const cognitoDomain = "https://eu-north-1o3prs94nj.auth.eu-north-1.amazoncognito.com";
+    window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
+  };
+
+  if (auth.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (auth.error) {
+    return <div>Encountering error... {auth.error.message}</div>;
+  }
+
+  if (auth.isAuthenticated) {
+    return (
+      <div>
+        <pre> Hello: {auth.user?.profile.email} </pre>
+        <pre> ID Token: {auth.user?.id_token} </pre>
+        <pre> Access Token: {auth.user?.access_token} </pre>
+        <pre> Refresh Token: {auth.user?.refresh_token} </pre>
+
+        <button onClick={() => auth.removeUser()}>Sign out</button>
+      </div>
+    );
+  }
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -61,58 +134,37 @@ function SignIn() {
     event.preventDefault();
   };
 
-  const handleGoogleSignIn = (response) => {
-    if (response.credential) {
-      // Handle successful login
-      // You can decode the credential to get user information
-      const decoded = jwtDecode(response.credential);
-      console.log('Decoded Google User:', decoded);
-      // decoded will contain: email, name, picture, etc.
-    }
-  };
+  const handleCognitoLogin = (provider) => {
+      // Cognito hosted UI URL with Facebook as identity provider
+      sessionStorage.setItem('loginAttempted', 'true');
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    console.log('Google login success:', credentialResponse);
-    // Handle the successful login here
-    handleGoogleSignIn(credentialResponse);
-  };
+      console.log(provider)
+      const cognitoUrl = 'https://eu-north-1o3prs94nj.auth.eu-north-1.amazoncognito.com/oauth2/authorize';
+      const params = {
+        identity_provider: 'Google',
+        response_type: 'token',
+        client_id: '45v61q97j0kbt5j8v84muqfv6e',
+        redirect_uri: 'http://localhost:3000/',
+        scope: 'aws.cognito.signin.user.admin openid profile email'
+      };
   
-  const handleGoogleError = () => {
-    console.log('Google login failed');
-  };
+      // Build the URL with query parameters
+      const queryString = Object.keys(params)
+        .map(key => `${key}=${encodeURIComponent(params[key])}`)
+        .join('&');
+      
+      // Redirect to Cognito hosted UI
+      window.location.href = `${cognitoUrl}?${queryString}`;
+      console.log('redirect successful after login')
+    };
   
-  const handleFacebookSignIn = async (response) => {
-    // Implement Facebook sign in logic
-    console.log('Facebook sign in clicked');
-    console.log(response)
-      try {
-
-        const { statusCode, data } = await Api.postRequest('http://localhost:5001/auth/login', {
-          loginType: 'facebook',
-          token: response.accessToken,
-        });
-
-        if (statusCode === 400 || statusCode === 500 || statusCode === 403) {
-          setError(data);
-          return;
-        }
-  
-        const { access_token } = JSON.parse(data);
-        setToken(access_token);
-        dispatch(setUserDetails());
-        replace('/');
-
-        // Handle successful login (store tokens, redirect, etc.)
-      } catch (error) {
-        console.error('Login failed:', error);
-      }
-  };
 
   const handleSignIn = async (values, { setSubmitting }) => {
     try {
       setError(null);
       const { username, password } = values;
-      const { statusCode, data } = await Api.postRequest('http://localhost:5001/auth/login', {
+      //http://localhost:5001/users/login
+      const { statusCode, data } = await Api.postRequest('/users/login', {
         username,
         password,
       });
@@ -235,37 +287,28 @@ function SignIn() {
             <Divider className={classes.dividerLine} />
           </Box>
 
+          {/* <div>
+            <button onClick={() => auth.signinRedirect()}>Sign in</button>
+            <button onClick={() => signOutRedirect()}>Sign out</button>
+          </div> */}
+
           <Box className={classes.socialLoginContainer}>
-              <GoogleLogin
-                clientId="873030555216-cqldesg27nih66kbcmg6bp3135rokd4q.apps.googleusercontent.com"
-                render={renderProps => (
-                  <GoogleLoginButton
-                    onClick={renderProps.onClick}
-                    disabled={renderProps.disabled}
-                    className="social-login-button" 
-                    style={{ width: '100%', maxWidth: '450px'}}
-                  >
-                    Sign in with Google
-                  </GoogleLoginButton>
-                )}
-                onSuccess={handleGoogleSuccess}
-                onError={handleGoogleError}
-              />
+            <GoogleLoginButton
+              className="social-login-button"
+              onClick={() => handleCognitoLogin(IDENTITY_PROVIDERS.GOOGLE)}
+              // style={{ width: '100%', maxWidth: '450px' }}
+            >
+              Sign in with Google
+            </GoogleLoginButton>
           </Box>
           <Box className={classes.socialLoginContainer}>
-              <FacebookLogin
-                  appId="551369100776958"
-                  autoLoad={false}
-                  fields="name,email,picture"
-                  callback={handleFacebookSignIn}
-                  render={renderProps => (
-                    <FacebookLoginButton  className="social-login-button" 
-                                           onClick={renderProps.onClick}
-                                           style={{ width: '100%' , maxWidth: '450px'}}>
-                      Sign in with Facebook
-                    </FacebookLoginButton>
-                  )}
-                />
+            <FacebookLoginButton
+              className="social-login-button"
+              onClick={() => handleCognitoLogin(IDENTITY_PROVIDERS.FACEBOOK)}
+              // style={{ width: '100%', maxWidth: '450px' }}
+            >
+              Sign in with Facebook
+            </FacebookLoginButton>
           </Box>
 
           <Box mt={3} textAlign="center">

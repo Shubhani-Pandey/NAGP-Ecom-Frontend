@@ -13,7 +13,7 @@ function Index() {
   const _handleSubmit = useCallback(async () => {
     if (fullName.length > 2 && email.length > 2 && password.length > 2) {
       setLoading(true)
-      const {statusCode, data} = await Api.postRequest('/api/user/signup', {
+      const {statusCode, data} = await Api.postRequest('/users/register', {
         email,
         fullName,
         password,

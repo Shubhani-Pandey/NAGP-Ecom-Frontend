@@ -10,7 +10,7 @@ function useLogin() {
   })
   const {replace} = useHistory()
   const checkLogin = useCallback(async () => {
-    const {statusCode, data} = await Api.getRequest(`/api/user/me`)
+    const {statusCode, data} = await Api.getRequest(`/users/me`)
     if (statusCode === 400 || statusCode === 500) {
       replace('/')
       logout()
