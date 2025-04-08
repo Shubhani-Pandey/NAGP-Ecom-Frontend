@@ -1,7 +1,7 @@
 import { config } from "./config";
 import { getToken } from "./localstorage";
 
-BASE_URL='https://vof635r1yb.execute-api.eu-north-1.amazonaws.com/dev'
+const BASE_URL='https://vof635r1yb.execute-api.eu-north-1.amazonaws.com/dev'
 
 const getRequest = async (path) => {
 
