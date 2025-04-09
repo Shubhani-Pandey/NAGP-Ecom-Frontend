@@ -13,6 +13,7 @@ import Pagination from './Pagination';
 import {getProducts as listProducts} from '../redux/actions/productActions'
 import { setUserDetails } from "../redux/actions/userAction";
 import { setLoggedUserDetails, getUserDetails, setToken } from '../utils/localstorage'
+import {Api} from '../utils/Api'
 
 
 const Search = () => {
