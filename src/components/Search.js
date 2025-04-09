@@ -153,10 +153,12 @@ const Search = () => {
             }
 
             try {
-                const response = await fetch(
-                    `http://localhost:5002/products/suggest?q=${query}&size=5`
-                );
-                const data = await response.json();
+                const {statusCode, data} = await Api.postRequest(`/products/products/suggest?q=${query}&size=5`)
+
+                // const response = await fetch(
+                //     `http://localhost:5002/products/suggest?q=${query}&size=5`
+                // );
+                data = data.json();
                 console.log('suggestions_data',data)
                 setSuggestions(data.suggestions || []);
             } catch (error) {
@@ -177,12 +179,13 @@ const Search = () => {
                 ...filters,
             });
 
-            console.log(`http://localhost:5002/products/search?${queryParams}`)
+            console.log(`/products/products/search?${queryParams}`)
 
-            const response = await fetch(
-                `http://localhost:5002/products/search?${queryParams}`
-            );
-            const data = await response.json();
+            const {statusCode, data} = await Api.postRequest(`/products/products/search?${queryParams}`)
+            // const response = await fetch(
+            //     `http://localhost:5002/products/search?${queryParams}`
+            // );
+            data = data.json();
             console.log(data)
 
             setSearchResults(data.products);
@@ -372,9 +375,13 @@ const Search = () => {
             });
 
             console.log(currentFilters.category_id,currentFilters.sort_by,currentFilters.sort_order,JSON.stringify(priceRanges))
+            
 
-            const response = await fetch(`http://localhost:5002/products/search?${queryParams}`);
-            const data = await response.json();
+            const {statusCode, data} = await Api.postRequest(`/products/products/search?${queryParams}`)
+            data = data.json()
+
+            // const response = await fetch(`http://localhost:5002/products/search?${queryParams}`);
+            // const data = await response.json();
             setAllProducts(data.products)
             console.log(data.products)
             // setSearchResults(data.products);
@@ -433,9 +440,10 @@ const Search = () => {
             const fetchAllProducts = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch('http://localhost:5002/products');
-                    const data = await response.json();
-                    setAllProducts(data);
+                    const {statusCode, data} = await Api.getRequest('/products/products/get')
+                    // const response = await fetch('http://localhost:5002/products');
+                    // const data = await response.json();
+                    setAllProducts(data.json());
                     setMetadata({
                         total: data.length,
                         total_pages: Math.ceil(data.length / 10) // Assuming 10 items per page
@@ -480,9 +488,10 @@ const Search = () => {
         const fetchCategories = async () => {
         try {
             // Replace with your actual API endpoint
-            const response = await fetch('http://127.0.0.1:5002/products');
-            const data = await response.json();
-            setCategories(data);
+            const {statusCode, data} = await Api.getRequest('/products/products/get')
+            // const response = await fetch('http://127.0.0.1:5002/products');
+            // const data = await response.json();
+            setCategories(data.json());
         } catch (error) {
             console.error('Error fetching categories:', error);
         }
