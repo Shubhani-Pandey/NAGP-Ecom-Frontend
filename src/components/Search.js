@@ -159,7 +159,7 @@ const Search = () => {
                 // const response = await fetch(
                 //     `http://localhost:5002/products/suggest?q=${query}&size=5`
                 // );
-                data = data.json();
+                // data = data.json();
                 console.log('suggestions_data',data)
                 setSuggestions(data.suggestions || []);
             } catch (error) {
@@ -186,7 +186,7 @@ const Search = () => {
             // const response = await fetch(
             //     `http://localhost:5002/products/search?${queryParams}`
             // );
-            data = data.json();
+            // data = data.json();
             console.log(data)
 
             setSearchResults(data.products);
@@ -379,7 +379,7 @@ const Search = () => {
             
 
             const {statusCode, data} = await Api.postRequest(`/products/products/search?${queryParams}`)
-            data = data.json()
+            // data = data.json()
 
             // const response = await fetch(`http://localhost:5002/products/search?${queryParams}`);
             // const data = await response.json();
