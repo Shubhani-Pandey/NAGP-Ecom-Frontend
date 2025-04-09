@@ -444,7 +444,7 @@ const Search = () => {
                     const {statusCode, data} = await Api.getRequest('/products/products/get')
                     // const response = await fetch('http://localhost:5002/products');
                     // const data = await response.json();
-                    setAllProducts(data.json());
+                    setAllProducts(data);
                     setMetadata({
                         total: data.length,
                         total_pages: Math.ceil(data.length / 10) // Assuming 10 items per page
