@@ -56,8 +56,10 @@ const CartScreen = () => {
         console.log(user_data['address'], user_data["name"], user_data["email"])
         
         //http://localhost:5004/orders
-        const {statusCode, data} = await Api.postRequest('/orders')
-        console.log('order api response', statusCode, data)
+        // const {statusCode, data} = await Api.postRequest('/orders/orders/place')
+        // console.log('order api response', statusCode, data)
+
+        const statusCode=200
 
         if (statusCode == 200){
 

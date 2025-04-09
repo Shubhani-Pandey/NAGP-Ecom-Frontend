@@ -5,7 +5,7 @@ import {convertToCartData} from '../../utils/utils.function'
 
 export const addToCart = (id, qty, screen=null) => async (dispatch, getState) => {
   //http://127.0.0.1:5002/products/${id}
-  const {data} = await Api.getRequest(`/products/${id}`)
+  const {data} = await Api.getRequest(`/products/products/${id}`)
   const product = JSON.parse(data)
   
   if (screen==null) {
@@ -32,7 +32,7 @@ export const addToCart = (id, qty, screen=null) => async (dispatch, getState) =>
     },
   })
   //http://127.0.0.1:5003/cart
-  Api.postRequest('/cart', {product_id: id, quantity: qty})
+  Api.postRequest('/cart/cart/create', {product_id: id, quantity: qty})
 }
 
 export const removeFromCart =
@@ -43,13 +43,13 @@ export const removeFromCart =
       payload: _id,
     })
     //http://127.0.0.1:5003/cart/
-    Api.DeleteRequest('/cart/' + _id)
+    Api.DeleteRequest('/cart/cart/' + _id)
   }
 
 export const fetchCart = () => async dispatch => {
   try {
     //http://127.0.0.1:5003/user_cart
-    const {data: strigifyData} = await Api.getRequest(`/user_cart`)
+    const {data: strigifyData} = await Api.getRequest(`/cart/cart/user_cart`)
     const {items} = JSON.parse(strigifyData)
 
     console.log('carts:', items)
