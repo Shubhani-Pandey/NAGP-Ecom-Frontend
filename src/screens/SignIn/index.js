@@ -11,7 +11,10 @@ import {
   Box,
   Typography,
   InputAdornment, 
-  IconButton
+  IconButton,
+  InputLabel,
+  FormControl,
+  OutlinedInput
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import Visibility from "@material-ui/icons/Visibility";
@@ -27,6 +30,8 @@ import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton,GoogleLoginButton } from 'react-social-login-buttons';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth  } from "react-oidc-context";
+// import GoogleIcon from '@mui/icons-material/Google';  // Or your preferred Google icon
+// import FacebookIcon from '@mui/icons-material/Facebook'; 
 
 
 
@@ -61,8 +66,8 @@ function SignIn() {
 
   useEffect(() => {
     // Parse the URL hash for tokens
-    console.log('SignIn component mounted');
-    console.log('Current URL:', window.location.href);
+    // console.log('SignIn component mounted');
+    // console.log('Current URL:', window.location.href);
 
     const hash = window.location.hash;
     const isRedirect = hash && hash.includes('access_token');
@@ -84,7 +89,7 @@ function SignIn() {
         return result;
       }, {});
       
-      console.log('tokens',tokens)
+      // console.log('tokens',tokens)
 
       if (tokens.access_token) {
         localStorage.setItem('accessToken', tokens.access_token);
@@ -127,6 +132,8 @@ function SignIn() {
   }
 
   const handleClickShowPassword = () => {
+    console.log('toggling show password')
+    console.log(!showPassword)
     setShowPassword(!showPassword);
   };
   
@@ -141,7 +148,7 @@ function SignIn() {
       console.log(provider)
       const cognitoUrl = 'https://eu-north-1o3prs94nj.auth.eu-north-1.amazoncognito.com/oauth2/authorize';
       const params = {
-        identity_provider: 'Google',
+        identity_provider: provider,
         response_type: 'token',
         client_id: '45v61q97j0kbt5j8v84muqfv6e',
         redirect_uri: 'http://localhost:3000/',
@@ -169,12 +176,13 @@ function SignIn() {
         password,
       });
 
+      console.log(data)
+
       if (statusCode === 400 || statusCode === 500 || statusCode === 403) {
         setError(data);
         return;
       }
-
-      const { access_token } = JSON.parse(data);
+      const { access_token } = data;
       setToken(access_token);
       dispatch(setUserDetails());
       replace('/');
@@ -222,12 +230,11 @@ function SignIn() {
             {({ errors, touched, isSubmitting, handleChange, handleBlur, values }) => (
               <Form className={classes.form}>
                 <TextField
-                  variant="outlined"
+                  // variant="outlined"
                   fullWidth
                   id="username"
                   name="username"
                   label="Username"
-                  type="text"
                   value={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -235,9 +242,10 @@ function SignIn() {
                   helperText={touched.username && errors.username}
                   margin="normal"
                 />
+        
 
-                <TextField
-                  variant="outlined"
+                <TextField 
+                  // variant="outlined"
                   fullWidth
                   id="password"
                   name="password"
@@ -245,7 +253,7 @@ function SignIn() {
                   type={showPassword ? 'text' : 'password'}
                   value={values.password}
                   onChange={handleChange}
-                  onBlur={handleBlur}
+                  // onBlur={handleBlur}
                   error={touched.password && Boolean(errors.password)}
                   helperText={touched.password && errors.password}
                   margin="normal"
@@ -258,7 +266,7 @@ function SignIn() {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -281,9 +289,9 @@ function SignIn() {
 
           <Box className={classes.dividerContainer}>
             <Divider className={classes.dividerLine} />
-            <Typography className={classes.dividerText}>
+            {/* <Typography className={classes.dividerText}>
               OR
-            </Typography>
+            </Typography> */}
             <Divider className={classes.dividerLine} />
           </Box>
 
@@ -294,20 +302,31 @@ function SignIn() {
 
           <Box className={classes.socialLoginContainer}>
             <GoogleLoginButton
-              className="social-login-button"
+              className="socialLoginButton googleButton"
               onClick={() => handleCognitoLogin(IDENTITY_PROVIDERS.GOOGLE)}
-              // style={{ width: '100%', maxWidth: '450px' }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height:'32px'
+              }}
             >
-              Sign in with Google
+              <span style={{ flex: 1, textAlign: 'center' }}>Sign in with Google</span>
             </GoogleLoginButton>
           </Box>
           <Box className={classes.socialLoginContainer}>
             <FacebookLoginButton
-              className="social-login-button"
+              className="socialLoginButton facebookButton"
               onClick={() => handleCognitoLogin(IDENTITY_PROVIDERS.FACEBOOK)}
-              // style={{ width: '100%', maxWidth: '450px' }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height:'32px',
+                backgroundColor: '#1877f2'
+              }}
             >
-              Sign in with Facebook
+              <span style={{ flex: 1, textAlign: 'center' }}>Sign in with Facebook</span>
             </FacebookLoginButton>
           </Box>
 

@@ -2,6 +2,7 @@ import {Api} from '../../utils/Api'
 import * as actionTypes from '../constants/userContants'
 import { setLoggedUserDetails, getUserDetails } from '../../utils/localstorage'
 
+
 export const setUserDetails = () => async dispatch => {
   //http://127.0.0.1:5001/users/me
   const {statusCode, data} = await Api.getRequest(`/users/me`)
@@ -13,17 +14,14 @@ export const setUserDetails = () => async dispatch => {
     return
   }
 
-  const {user} = JSON.parse(data)
 
-  setLoggedUserDetails(data)
-
-  const details = getUserDetails()
+  setLoggedUserDetails(JSON.stringify(data))
 
   dispatch({
     type: actionTypes.SET_USER,
     payload: {
       isLogin: true,
-      details: {...user},
+      details: {...data},
     },
   })
 }

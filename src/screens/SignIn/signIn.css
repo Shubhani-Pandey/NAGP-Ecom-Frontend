@@ -34,25 +34,36 @@
   text-decoration: underline;
 }
 
-.social-icon {
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .logo {
   animation: fadeInDown 0.8s ease-in-out;
 }
 
-
-.social-login-button {
-  width: 100% !important;
-  max-width: 450px !important;
+.socialLoginButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-.social-login-button > div,
-.social-login-button button {
-  width: 100% !important;
-  max-width: 450px !important;
+.socialLoginButton > div {
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  width: auto !important;
+}
+
+.socialLoginButton > div:first-child {
+  margin-right: 8px !important;
+}
+
+.socialLoginButton span {
+  margin: 0 !important;
+  text-align: center !important;
+  width: auto !important;
+}
+
+.googleButton, .facebookButton {
+  text-align: center;
+  background-color: '#1877f2 !important',
 }
 
 @keyframes fadeInDown {

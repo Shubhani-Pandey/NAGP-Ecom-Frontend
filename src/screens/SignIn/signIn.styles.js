@@ -5,36 +5,37 @@ export const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   logo: {
-    width: '120px',
+    width: '90px',
     height: 'auto',
     marginBottom: theme.spacing(1)
   },
   form: {
     width: '100%'
   },
+  socialLoginButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
   socialLoginContainer:{
-    width:'100%',
-    padding: '0 16px',
-    marginBottom: theme.spacing(2),
+    width:'100% !important',
+    padding: '0 0px',
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: theme.spacing(1),
     '& button': {  
       width: '100% !important',  
-      height: '40px',
-      fontSize: '14px',
+      height: '30px',
+      fontSize: '10px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-    },
-    '& div': {  
-      width: '100%',
     }
-  },
-  socialButton: {
-    width: '100% !important',
-    maxWidth: 'none !important',
-    margin: '8px 0 !important',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: '#1877f2 !important',
   },
   alert: {
     marginBottom: theme.spacing(2)
@@ -54,13 +55,4 @@ export const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0, 2),
     color: theme.palette.text.secondary,
   },
-  socialIcon: {
-    width: '40px',
-    height: '40px',
-    cursor: 'pointer',
-    transition: 'transform 0.2s ease',
-    '&:hover': {
-      transform: 'scale(1.1)'
-    }
-  }
 }));

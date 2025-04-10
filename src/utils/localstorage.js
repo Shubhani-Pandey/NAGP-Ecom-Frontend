@@ -29,7 +29,7 @@ export const setLoggedUserDetails = details => {
 
 export const getUserDetails = () => {
   let details = window.localStorage.getItem(user_details)
-  if (!!details) return details
+  if (!!details) return JSON.parse(details)
   return false
 }
 

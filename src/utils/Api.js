@@ -15,7 +15,7 @@ const getRequest = async (path) => {
     };
 
     const res = await fetch(BASE_URL+path, params);
-    const data = await res.text();
+    const data = await res.json();
     return { statusCode: res.status, data };
   } catch (e) {
     console.error(`error in get Request (${BASE_URL+path}) :- `, e);
@@ -37,7 +37,7 @@ const postRequest = async (path, body) => {
 
     const res = await fetch(BASE_URL+path, params);
 
-    const data = await res.text();
+    const data = await res.json();
     return { statusCode: res.status, data };
   } catch (e) {
     console.log(`error in post Request (${BASE_URL+path}) :- `, e);
@@ -56,7 +56,7 @@ const DeleteRequest = async (path) => {
 
     const res = await fetch(BASE_URL+path, params);
 
-    const data = await res.text();
+    const data = await res.json();
     return { statusCode: res.status, data };
   } catch (e) {
     console.log(`error in Delete Request (${BASE_URL+path}) :- `, e);
@@ -76,7 +76,7 @@ const putRequest = async (path, body) => {
 
     const res = await fetch(BASE_URL+path, params);
 
-    const data = await res.text();
+    const data = await res.json();
     return { statusCode: res.status, data };
   } catch (e) {
     console.log(`error in PUT Request (${BASE_URL+path}) :- `, e);
@@ -96,7 +96,7 @@ const patchRequest = async (path, body) => {
 
     const res = await fetch(BASE_URL+path, params);
 
-    const data = await res.text();
+    const data = await res.json();
     return { statusCode: res.status, data };
   } catch (e) {
     console.log(`error in PUT Request (${BASE_URL+path}) :- `, e);

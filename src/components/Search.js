@@ -25,11 +25,11 @@ const Search = () => {
 
     useEffect(() => {
         // Parse the URL hash for tokens
-        console.log('SignIn component mounted');
-        console.log('Current URL:', window.location.href);
+        console.log('Search component mounted');
+        // console.log('Current URL:', window.location.href);
     
         const hash = window.location.hash;
-        console.log('hash', hash);
+        // console.log('hash', hash);
         if (hash) {
           // Extract tokens from URL hash
           const tokens = hash.substring(1).split('&').reduce((result, item) => {
@@ -38,7 +38,7 @@ const Search = () => {
             return result;
           }, {});
           
-          console.log('tokens',tokens)
+        //   console.log('tokens',tokens)
     
           if (tokens.access_token) {
             // Store the token
@@ -154,7 +154,7 @@ const Search = () => {
             }
 
             try {
-                const {statusCode, data} = await Api.postRequest(`/products/products/suggest?q=${query}&size=5`)
+                const {statusCode, data} = await Api.getRequest(`/products/products/suggest?q=${query}&size=5`)
 
                 // const response = await fetch(
                 //     `http://localhost:5002/products/suggest?q=${query}&size=5`
@@ -182,12 +182,12 @@ const Search = () => {
 
             console.log(`/products/products/search?${queryParams}`)
 
-            const {statusCode, data} = await Api.postRequest(`/products/products/search?${queryParams}`)
+            const {statusCode, data} = await Api.getRequest(`/products/products/search?${queryParams}`)
             // const response = await fetch(
             //     `http://localhost:5002/products/search?${queryParams}`
             // );
             // data = data.json();
-            console.log(data)
+            // console.log(data)
 
             setSearchResults(data.products);
             setMetadata(data.metadata);
@@ -376,15 +376,16 @@ const Search = () => {
             });
 
             console.log(currentFilters.category_id,currentFilters.sort_by,currentFilters.sort_order,JSON.stringify(priceRanges))
+            console.log(`/products/products/search?${queryParams}`)
             
 
-            const {statusCode, data} = await Api.postRequest(`/products/products/search?${queryParams}`)
+            const {statusCode, data} = await Api.getRequest(`/products/products/search?${queryParams}`)
             // data = data.json()
 
             // const response = await fetch(`http://localhost:5002/products/search?${queryParams}`);
             // const data = await response.json();
             setAllProducts(data.products)
-            console.log(data.products)
+            // console.log(data.products)
             // setSearchResults(data.products);
             setMetadata(data.metadata);
         } catch (error) {
@@ -433,6 +434,7 @@ const Search = () => {
         
         const startIndex = (filters.page - 1) * 10;
         const endIndex = startIndex + 10;
+        // console.log('allproducts',allProducts)
         return allProducts.slice(startIndex, endIndex);
     };
 
@@ -492,7 +494,7 @@ const Search = () => {
             const {statusCode, data} = await Api.getRequest('/products/products/get')
             // const response = await fetch('http://127.0.0.1:5002/products');
             // const data = await response.json();
-            setCategories(data.json());
+            setCategories(data);
         } catch (error) {
             console.error('Error fetching categories:', error);
         }

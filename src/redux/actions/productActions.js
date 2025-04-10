@@ -15,11 +15,11 @@ export const getProducts = () => async dispatch => {
 
     // Check if we have valid cached data
     if (cache.data && cache.timestamp) {
-      console.log('using cached data')
+      // console.log('using cached data')
       const now = Date.now()
       if (now - cache.timestamp < cache.CACHE_DURATION) {
         // Return cached data if it's still valid
-        console.log(cache.data)
+        // console.log(cache.data)
         return dispatch({
           type: actionTypes.GET_PRODUCTS_SUCCESS,
           payload: cache.data,
@@ -30,18 +30,16 @@ export const getProducts = () => async dispatch => {
     // If no cache or cache expired, make the API call
     //http://127.0.0.1:5002/products
     const {data} = await Api.getRequest('/products/products/get')
-    const parsedData = JSON.parse(data)
+    const parsedData = data
 
     // Update the cache
     console.log('updating cache')
     cache.data = parsedData
     cache.timestamp = Date.now()
 
-    console.log(JSON.parse(data))
-
     dispatch({
       type: actionTypes.GET_PRODUCTS_SUCCESS,
-      payload: JSON.parse(data),
+      payload: data,
     })
   } catch (error) {
     dispatch({
@@ -60,7 +58,7 @@ export const getProductDetails = id => async dispatch => {
     
     //http://127.0.0.1:5002/products/${id}
     const {data} = await Api.getRequest(`/products/products/${id}`)
-    const p = JSON.parse(data)
+    const p = data
 
     dispatch({
       type: actionTypes.GET_PRODUCT_DETAILS_SUCCESS,

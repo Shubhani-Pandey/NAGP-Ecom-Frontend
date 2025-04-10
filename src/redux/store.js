@@ -9,12 +9,14 @@ import {
   getProductDetailsReducer,
 } from './reducers/productReducers'
 import {userReducer} from './reducers/userReducer'
+import { getOrdersReducer } from './reducers/orderReducers'
 
 const reducer = combineReducers({
   cart: cartReducer,
   getProducts: getProductsReducer,
   getProductDetails: getProductDetailsReducer,
   user: userReducer,
+  getOrderDetails: getOrdersReducer
 })
 
 const middleware = [thunk]

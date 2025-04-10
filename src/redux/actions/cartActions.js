@@ -6,7 +6,7 @@ import {convertToCartData} from '../../utils/utils.function'
 export const addToCart = (id, qty, screen=null) => async (dispatch, getState) => {
   //http://127.0.0.1:5002/products/${id}
   const {data} = await Api.getRequest(`/products/products/${id}`)
-  const product = JSON.parse(data)
+  const product = data
   
   if (screen==null) {
       // Get current cart state
@@ -49,17 +49,19 @@ export const removeFromCart =
 export const fetchCart = () => async dispatch => {
   try {
     //http://127.0.0.1:5003/user_cart
-    const {data: strigifyData} = await Api.getRequest(`/cart/cart/user_cart`)
-    const {items} = JSON.parse(strigifyData)
+    const {statusCode, data: strigifyData} = await Api.getRequest(`/cart/cart/user_cart`)
+    const {items} = strigifyData
 
-    console.log('carts:', items)
+    if (statusCode==200) {
+      dispatch({
+        type: FETCH_MY_CART,
+        payload: {
+          carts: convertToCartData(items),
+        },
+      })
+    }
 
-    dispatch({
-      type: FETCH_MY_CART,
-      payload: {
-        carts: convertToCartData(items),
-      },
-    })
+
   } catch (e) {
     console.log('EROROR :  ', e)
   }

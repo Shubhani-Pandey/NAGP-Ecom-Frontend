@@ -12,7 +12,7 @@ import Search from './components/Search'
 import { lazy, Suspense } from 'react';
 
 // Screens
-import HomeScreen from './screens/HomeScreen'
+import OrderHistoryScreen from './screens/OrderHistoryScreen'
 import CheckoutScreen from './screens/CheckoutScreen'
 import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
@@ -52,10 +52,11 @@ function App() {
             <Route exact path="/product/:id" component={ProductScreen} />
             <Route exact path="/cart" component={CartScreen} />
             <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/orderhistory" component={OrderHistoryScreen} />
+            <Route exact path="/checkout" component={CheckoutScreen} />
             <GoogleOAuthProvider clientId="873030555216-cqldesg27nih66kbcmg6bp3135rokd4q.apps.googleusercontent.com">
                 <Route exact path="/signin" component={SignIn} />
             </GoogleOAuthProvider>
-            <Route exact path="/checkout" component={CheckoutScreen} />
             {/* <Route exact path="/order/:id" component={OrderScreen} /> */}
           </Switch>
           {/* </Suspense> */}

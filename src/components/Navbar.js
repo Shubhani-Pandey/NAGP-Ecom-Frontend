@@ -27,6 +27,9 @@ const Navbar = ({click}) => {
     history.push('/')
   }
   
+  const _showOrderHistory = () => {
+    history.push('/orderhistory')
+  }
 
   return (
     <nav className="navbar">
@@ -55,7 +58,7 @@ const Navbar = ({click}) => {
         ) : (
           <li className="dropdown">
             <p  className="user-name" onClick={() => setShowDropdown(!showDropdown)}>
-              {JSON.parse(getUserDetails())["name"]} ▼
+              {getUserDetails()?.username || 'user'} ▼
             </p>
             
             <div className={`dropdown-content ${showDropdown ? 'show' : ''}`}>
@@ -67,6 +70,15 @@ const Navbar = ({click}) => {
                 }}
               >
                 Your Profile
+              </div>
+              <div 
+                className="dropdown-item"
+                onClick={() => {
+                  _showOrderHistory();
+                  setShowDropdown(false);
+                }}
+              >
+                Order History
               </div>
               <div 
                 className="dropdown-item"
