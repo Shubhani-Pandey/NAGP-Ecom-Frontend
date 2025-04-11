@@ -54,9 +54,10 @@ function App() {
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/orderhistory" component={OrderHistoryScreen} />
             <Route exact path="/checkout" component={CheckoutScreen} />
-            <GoogleOAuthProvider clientId="873030555216-cqldesg27nih66kbcmg6bp3135rokd4q.apps.googleusercontent.com">
+            <Route exact path="/signin" component={SignIn} />
+            {/* <GoogleOAuthProvider clientId="873030555216-cqldesg27nih66kbcmg6bp3135rokd4q.apps.googleusercontent.com">
                 <Route exact path="/signin" component={SignIn} />
-            </GoogleOAuthProvider>
+            </GoogleOAuthProvider> */}
             {/* <Route exact path="/order/:id" component={OrderScreen} /> */}
           </Switch>
           {/* </Suspense> */}
