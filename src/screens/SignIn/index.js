@@ -105,7 +105,7 @@ function SignIn() {
 
   const signOut= () => {
     const clientId = "45v61q97j0kbt5j8v84muqfv6e";
-    const logoutUri = "https://localhost:3000/signin";
+    const logoutUri = "https://www.nagpecom.click/signin";
     const cognitoDomain = "https://eu-north-1o3prs94nj.auth.eu-north-1.amazoncognito.com";
     window.location.href = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${encodeURIComponent(logoutUri)}`;
   };
@@ -151,7 +151,7 @@ function SignIn() {
         identity_provider: provider,
         response_type: 'token',
         client_id: '45v61q97j0kbt5j8v84muqfv6e',
-        redirect_uri: 'http://localhost:3000/',
+        redirect_uri: 'https://www.nagpecom.click/',
         scope: 'aws.cognito.signin.user.admin openid profile email'
       };
   
