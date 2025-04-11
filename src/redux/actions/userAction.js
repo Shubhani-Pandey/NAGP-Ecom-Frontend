@@ -1,6 +1,6 @@
 import {Api} from '../../utils/Api'
 import * as actionTypes from '../constants/userContants'
-import { setLoggedUserDetails, getUserDetails } from '../../utils/localstorage'
+import { setLoggedUserDetails, logout } from '../../utils/localstorage'
 
 
 export const setUserDetails = () => async dispatch => {
@@ -11,6 +11,7 @@ export const setUserDetails = () => async dispatch => {
     dispatch({
       type: actionTypes.SET_INITIAL_STATE,
     })
+    logout()
     return
   }
 

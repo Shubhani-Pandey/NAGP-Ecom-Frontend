@@ -28,8 +28,16 @@ export const setLoggedUserDetails = details => {
 }
 
 export const getUserDetails = () => {
+  
   let details = window.localStorage.getItem(user_details)
-  if (!!details) return JSON.parse(details)
+  if (!!details) {
+    if ('error' in JSON.parse(details)) {
+      logout()
+      return false
+    }
+    else {
+      return JSON.parse(details)
+    }
+  }
   return false
 }
-

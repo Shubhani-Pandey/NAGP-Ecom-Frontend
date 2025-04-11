@@ -51,14 +51,14 @@ const Navbar = ({click}) => {
           <Link to="/">Shop</Link>
         </li>
 
-        {!user.userInfo.isLogin ? (
+        {!getUserDetails() ? (
           <li>
             <Link to="/signin">Login</Link>
           </li>
         ) : (
           <li className="dropdown">
             <p  className="user-name" onClick={() => setShowDropdown(!showDropdown)}>
-              {getUserDetails()?.username || 'user'} ▼
+              {getUserDetails()?.email.split('@')[0] || 'user'} ▼
             </p>
             
             <div className={`dropdown-content ${showDropdown ? 'show' : ''}`}>

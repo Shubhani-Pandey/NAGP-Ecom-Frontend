@@ -33,7 +33,6 @@ export const getProducts = () => async dispatch => {
     const parsedData = data
 
     // Update the cache
-    console.log('updating cache')
     cache.data = parsedData
     cache.timestamp = Date.now()
 

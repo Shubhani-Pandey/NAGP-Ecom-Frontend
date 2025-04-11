@@ -25,7 +25,7 @@ const Search = () => {
 
     useEffect(() => {
         // Parse the URL hash for tokens
-        console.log('Search component mounted');
+        // console.log('Search component mounted');
         // console.log('Current URL:', window.location.href);
     
         const hash = window.location.hash;
