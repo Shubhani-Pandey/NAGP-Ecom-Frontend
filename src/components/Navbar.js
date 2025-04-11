@@ -34,7 +34,7 @@ const Navbar = ({click}) => {
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <h2>NAGARRO NAGP E-COMMERCE WEBSITE- de535e16-82f9-496b-84c3-8a79ef534dd8</h2>
+        <h2>NAGP E-COMMERCE WEBSITE</h2>
       </div>
 
       <ul className="navbar__links">
